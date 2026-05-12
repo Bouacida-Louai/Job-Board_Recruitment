@@ -1,0 +1,18 @@
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # This service IS the registry — it should not
+    # register itself or try to fetch a registry
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  server:
+    # Wait 5 minutes before evicting missing instances
+    # in production — lower for dev speed
+    eviction-interval-timer-in-ms: 5000
+    enable-self-preservation: false
