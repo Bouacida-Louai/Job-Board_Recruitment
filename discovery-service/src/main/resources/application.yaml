@@ -5,9 +5,12 @@ spring:
     import: optional:configserver:http://localhost:8888
   cloud:
     config:
-      fail-fast: true
+      fail-fast: true # If true, the application will fail to start if it cannot connect to the config server. Set to false to allow the application
+      #to start with default or local properties if the config server is unavailable.
       retry:
-        max-attempts: 5
-        initial-interval: 2000
-        max-interval: 5000
-        multiplier: 1.5
+        max-attempts: 5 # Number of retry attempts before giving up
+        initial-interval: 2000 # Initial wait time before the first retry (in milliseconds)
+        max-interval: 5000 # Maximum wait time between retries (in milliseconds)
+        multiplier: 1.5 # Multiplier to increase the wait time between retries (e.g., 1.5
+        #means the wait time will increase by 50% after each attempt)
+

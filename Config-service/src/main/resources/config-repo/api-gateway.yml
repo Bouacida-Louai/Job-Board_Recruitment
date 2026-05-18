@@ -1,0 +1,53 @@
+server:
+  port: 8889
+
+jwt:
+  secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7d7dc0ea6be0e1f1b4e2e9a1c8
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+
+        - id: company-service
+          uri: lb://company-service
+          predicates:
+            - Path=/api/companies/**
+
+        - id: job-service
+          uri: lb://job-service
+          predicates:
+            - Path=/api/jobs/**
+
+        - id: candidate-service
+          uri: lb://candidate-service
+          predicates:
+            - Path=/api/candidates/**
+
+        - id: application-service
+          uri: lb://application-service
+          predicates:
+            - Path=/api/applications/**
+
+resilience4j:
+  ratelimiter:
+    instances:
+      default:
+        limit-for-period: 20
+        limit-refresh-period: 1s
+        timeout-duration: 0s
