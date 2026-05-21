@@ -1,0 +1,45 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: job-service
+  datasource:
+    url: jdbc:mysql://localhost:3307/job_db
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Feign client config
+feign:
+  client:
+    config:
+      company-service:
+        connect-timeout: 3000
+        read-timeout: 3000
+
+# Resilience4j circuit breaker config
+resilience4j:
+  circuitbreaker:
+    instances:
+      company-service:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+  timelimiter:
+    instances:
+      company-service:
+        timeout-duration: 3s
